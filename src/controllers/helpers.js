@@ -1,21 +1,26 @@
-export const badRequest = (message) => {
-  return {
-    status: 400,
-    message,
-  };
-};
+export const badRequest = (message) => ({
+  status: 400,
+  message,
+  data: null,
+});
 
-export const internalServerError = (message) => {
-  return {
-    status: 500,
-    message,
-  };
-};
+export const internalServerError = (message) => ({
+  status: 500,
+  message,
+});
 
-export const created = (data, message) => {
-  return {
-    status: 201,
-    data,
-    message,
-  };
-};
+export const created = (data, message) => ({
+  status: 201,
+  data,
+  message,
+});
+
+export const serverError = () => ({
+  status: 500,
+  message: 'Internal server error',
+});
+
+export const ok = (data) => ({
+  status: 200,
+  data,
+});
