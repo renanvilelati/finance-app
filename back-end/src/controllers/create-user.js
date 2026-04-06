@@ -1,6 +1,7 @@
 import { createUserSchema } from '../schemas/user/create-user-schema.js';
 import { CreateUserUseCase } from '../use-cases/create-user.js';
-import { badRequest, created, internalServerError } from './helpers.js';
+import { badRequest, created, serverError } from './helpers.js';
+import { EmailAlreadyInUseError } from '../errors/user.js';
 
 export class CreateUserController {
   async execute(httpRequest) {
@@ -11,16 +12,17 @@ export class CreateUserController {
         return badRequest(parsedSchema.error.issues[0].message);
       }
 
-      // Chamar use case
       const createdUserUseCase = new CreateUserUseCase();
       const createdUser = await createdUserUseCase.execute(parsedSchema.data);
 
-      // Retornar o status code
       return created(createdUser, 'User created successufully');
     } catch (error) {
-      console.error(`Error: ${error}`);
+      if (error instanceof EmailAlreadyInUseError) {
+        return badRequest(error.message);
+      }
 
-      return internalServerError('Internal server error');
+      console.error(`Error: ${error}`);
+      return serverError();
     }
   }
 }
