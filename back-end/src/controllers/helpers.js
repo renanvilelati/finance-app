@@ -4,11 +4,6 @@ export const badRequest = (message) => ({
   data: null,
 });
 
-export const internalServerError = (message) => ({
-  status: 500,
-  message,
-});
-
 export const created = (data, message) => ({
   status: 201,
   data,
