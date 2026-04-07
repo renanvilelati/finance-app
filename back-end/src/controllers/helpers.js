@@ -4,6 +4,12 @@ export const badRequest = (message) => ({
   data: null,
 });
 
+export const notFound = (message) => ({
+  status: 404,
+  message,
+  data: null,
+});
+
 export const created = (data, message) => ({
   status: 201,
   data,
