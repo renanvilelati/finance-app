@@ -1,6 +1,6 @@
 import z from 'zod';
 import { GetUserByIdUseCase } from '../use-cases/get-user-by-id.js';
-import { badRequest, ok, serverError } from './helpers.js';
+import { badRequest, notFound, ok, serverError } from './helpers.js';
 
 export class GetUserByIdController {
   async execute(httpRequest) {
@@ -15,6 +15,10 @@ export class GetUserByIdController {
       const getUserByIdUseCase = new GetUserByIdUseCase();
 
       const user = await getUserByIdUseCase.execute(parsedSchema.data);
+
+      if (!user) {
+        return notFound('User not found');
+      }
 
       return ok(user);
     } catch (error) {
